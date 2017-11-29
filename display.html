@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Testing</title>
+</head>
+<body>
+    <div id="name">Name of the patient: </div>
+    <div id="org">Organization name: </div>
+    <div id="gender">Gender: </div>
+    <div id="numCond">Number of conditions they have: </div>
+    <div>List of all conditions:</div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        $.getJSON('patient.json', function(data){
+            var name = data.identifier[0].type.name[0].family[0] + " " + data.identifier[0].type.name[0].given[0];
+            $('#name').append(name);
+            var org = data.identifier[0].type.managingOrganization.display;
+            $('#org').append(org);
+            var gender = data.identifier[0].type.gender;
+            $('#gender').append(gender);
+            var count = data.identifier[0].type.conditions.length;
+            $('#numCond').append(count);
+            var list = [];
+            $.each(data.identifier[0].type.conditions, function (index, value){
+                console.log(value);
+                list.push('<span>' + "- " + value + '</span><br/>');
+            });
+            $('body').append(list);
+        })
+    </script>
+
+</body>
+</html>
